@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_git_stars/stars_page.dart';
 
-import 'home_page.dart';
+import 'users_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,18 +49,13 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.list_alt),
+            label: 'Users',
             backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-            backgroundColor: Colors.green,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.star),
+            label: 'Stars',
             backgroundColor: Colors.purple,
           ),
         ],
@@ -70,9 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody(int index) {
     switch (index) {
       case 0:
-        return const HomePage(title: 'Home');
+        return const UsersPage(title: 'Users');
       default:
-        return const HomePage(title: 'Home');
+        return const StarsPage(title: 'Stars');
     }
   }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+class StarsPage extends StatefulWidget {
+  const StarsPage({Key? key, required this.title}) : super(key: key);
 
   static const String routeName = '/home';
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<StarsPage> createState() => _StarsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _StarsPageState extends State<StarsPage> {
   int _counter = 0;
 
   void _incrementCounter() {
