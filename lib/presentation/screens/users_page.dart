@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class UsersPage extends StatefulWidget {
   const UsersPage({Key? key, required this.title}) : super(key: key);
 
-  static const String routeName = '/home';
-  final String title;
+  final String? title;
 
   @override
   State<UsersPage> createState() => _UsersPageState();
@@ -24,7 +23,7 @@ class _UsersPageState extends State<UsersPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: Text(widget.title ?? ''),
         ),
         body: Center(
           child: Column(
