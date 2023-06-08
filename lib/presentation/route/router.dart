@@ -6,14 +6,20 @@ import 'package:go_router/go_router.dart';
 import '../screens/main_page.dart';
 
 enum Routes {
-  users(name: 'users', path: '/users', title: 'Users'),
-  stars(name: 'stars', path: '/stars', title: 'Stars');
+  users(
+      name: 'users', path: '/users', title: 'Users', iconData: Icons.list_alt),
+  stars(name: 'stars', path: '/stars', title: 'Stars', iconData: Icons.star);
 
-  const Routes({required this.name, required this.path, required this.title});
+  const Routes(
+      {required this.name,
+      required this.path,
+      required this.title,
+      required this.iconData});
 
   final String name;
   final String path;
   final String title;
+  final IconData iconData;
 
   GoRoute get route {
     switch (this) {
