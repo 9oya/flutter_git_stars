@@ -21,6 +21,8 @@ class _UsersPageState extends State<UsersPage> {
   late TextEditingController _textEditingController;
   late ScrollController _scrollController;
   bool listenerAdded = false;
+  bool _isScrollToLoading = false;
+  double _lastScrolledPosition = 0.0;
 
   void _initListeners(BuildContext context, UsersState state) {
     if (!listenerAdded) {
@@ -32,8 +34,12 @@ class _UsersPageState extends State<UsersPage> {
       });
       _scrollController.addListener(() {
         ScrollPosition scrollPosition = _scrollController.position;
-        if (scrollPosition.pixels > scrollPosition.maxScrollExtent - 1000 &&
-            !state.isScrollToLoading) {
+        _lastScrolledPosition = scrollPosition.pixels;
+        if (scrollPosition.pixels < _lastScrolledPosition) {
+          // scrolled up...
+        } else if (scrollPosition.pixels > scrollPosition.maxScrollExtent - 1000 &&
+            !_isScrollToLoading) {
+          _isScrollToLoading = true;
           context.read<UsersCubit>().loadMoreUsers();
         }
       });
@@ -75,8 +81,8 @@ class _UsersPageState extends State<UsersPage> {
                       padding: const EdgeInsets.only(top: 90),
                       itemCount: state.users.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (index == state.users.length-1) {
-                          context.read<UsersCubit>().scrollToLoadCompleted();
+                        if (index == state.users.length - 1) {
+                          _isScrollToLoading = false;
                         }
                         return GestureDetector(
                           child: Row(
@@ -105,16 +111,6 @@ class _UsersPageState extends State<UsersPage> {
                       hintText: 'Search users',
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      height: 70,
-                      width: 70,
-                      child: Visibility(
-                          visible: state.isScrollToLoading,
-                          child: const CircularProgressIndicator()),
-                    ),
-                  )
                 ],
               ));
         },

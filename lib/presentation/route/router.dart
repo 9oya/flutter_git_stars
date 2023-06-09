@@ -7,53 +7,16 @@ import 'package:go_router/go_router.dart';
 import '../screens/main_page.dart';
 
 enum Routes {
-  users(
-      name: 'users', path: '/users', title: 'Users', iconData: Icons.list_alt),
-  stars(name: 'stars', path: '/stars', title: 'Stars', iconData: Icons.star);
+  users(name: 'users', title: 'Users', iconData: Icons.list_alt),
+  stars(name: 'stars', title: 'Stars', iconData: Icons.star),
+  detail(name: 'detail', title: null, iconData: null);
 
   const Routes(
-      {required this.name,
-      required this.path,
-      required this.title,
-      required this.iconData});
+      {required this.name, required this.title, required this.iconData});
 
   final String name;
-  final String path;
-  final String title;
-  final IconData iconData;
-
-  GoRoute get route {
-    switch (this) {
-      case Routes.users:
-        return GoRoute(
-            path: path,
-            builder: (BuildContext context, GoRouterState state) {
-              // final Map<String, dynamic> extra =
-              //     state.extra as Map<String, dynamic>;
-              return const UsersPage(title: 'Users');
-            },
-            routes: <RouteBase>[
-              GoRoute(
-                path: 'detail',
-                builder: (BuildContext context, GoRouterState state) {
-                  final Map<String, dynamic> extra =
-                      state.extra as Map<String, dynamic>;
-                  return UserDetailPage(
-                      login: extra['login'], avatarUrl: extra['avatarUrl']);
-                },
-              ),
-            ]);
-      case Routes.stars:
-        return GoRoute(
-          path: path,
-          builder: (BuildContext context, GoRouterState state) {
-            // final Map<String, dynamic> extra =
-            //     state.extra as Map<String, dynamic>;
-            return const StarsPage(title: 'Stars');
-          },
-        );
-    }
-  }
+  final String? title;
+  final IconData? iconData;
 }
 
 class RouterUtils {
@@ -64,7 +27,7 @@ class RouterUtils {
 
   static final router = GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: Routes.users.path,
+      initialLocation: '/${Routes.users.name}',
       initialExtra: {
         'title': Routes.users.title
       },
@@ -79,10 +42,31 @@ class RouterUtils {
             },
             branches: <StatefulShellBranch>[
               StatefulShellBranch(routes: <RouteBase>[
-                Routes.users.route,
+                GoRoute(
+                    path: '/${Routes.users.name}',
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const UsersPage(title: 'Users');
+                    },
+                    routes: <RouteBase>[
+                      GoRoute(
+                        path: Routes.detail.name,
+                        builder: (BuildContext context, GoRouterState state) {
+                          final Map<String, dynamic> extra =
+                              state.extra as Map<String, dynamic>;
+                          return UserDetailPage(
+                              login: extra['login'],
+                              avatarUrl: extra['avatarUrl']);
+                        },
+                      ),
+                    ]),
               ]),
               StatefulShellBranch(routes: <RouteBase>[
-                Routes.stars.route,
+                GoRoute(
+                  path: '/${Routes.stars.name}',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return const StarsPage(title: 'Stars');
+                  },
+                ),
               ]),
             ])
       ]);

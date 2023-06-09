@@ -6,7 +6,6 @@ import '../../domain/entity/user_item_model.dart';
 class UsersState extends Equatable {
   const UsersState(
       {required this.users,
-      required this.isScrollToLoading,
       required this.perPage,
       required this.page,
       required this.sortType,
@@ -14,7 +13,6 @@ class UsersState extends Equatable {
       required this.query});
 
   final List<UserItemModel> users;
-  final bool isScrollToLoading;
   final int perPage;
   final int page;
   final UserSortType sortType;
@@ -24,7 +22,6 @@ class UsersState extends Equatable {
   factory UsersState.fromDefault() {
     return const UsersState(
         users: [],
-        isScrollToLoading: false,
         perPage: 10,
         page: 1,
         sortType: UserSortType.followers,
@@ -34,7 +31,6 @@ class UsersState extends Equatable {
 
   UsersState copyWith({
     List<UserItemModel>? users,
-    bool? isScrollToLoading,
     int? perPage,
     int? page,
     UserSortType? sortType,
@@ -43,7 +39,6 @@ class UsersState extends Equatable {
   }) {
     return UsersState(
       users: users ?? this.users,
-      isScrollToLoading: isScrollToLoading ?? this.isScrollToLoading,
       perPage: perPage ?? this.perPage,
       page: page ?? this.page,
       sortType: sortType ?? this.sortType,
@@ -55,7 +50,6 @@ class UsersState extends Equatable {
   @override
   List<Object?> get props => [
         users,
-        isScrollToLoading,
         perPage,
         page,
         sortType,
