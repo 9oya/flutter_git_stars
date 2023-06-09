@@ -75,7 +75,7 @@ class _UsersPageState extends State<UsersPage> {
                       padding: const EdgeInsets.only(top: 90),
                       itemCount: state.users.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (index == state.users.length) {
+                        if (index == state.users.length-1) {
                           context.read<UsersCubit>().scrollToLoadCompleted();
                         }
                         return GestureDetector(
@@ -105,6 +105,16 @@ class _UsersPageState extends State<UsersPage> {
                       hintText: 'Search users',
                     ),
                   ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      height: 70,
+                      width: 70,
+                      child: Visibility(
+                          visible: state.isScrollToLoading,
+                          child: const CircularProgressIndicator()),
+                    ),
+                  )
                 ],
               ));
         },
