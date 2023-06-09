@@ -19,6 +19,7 @@ class UsersPage extends StatefulWidget {
 
 class _UsersPageState extends State<UsersPage> {
   late TextEditingController _textEditingController;
+  late ScrollController _scrollController;
   bool listenerAdded = false;
 
   void _initListeners(BuildContext context, UsersState state) {
@@ -29,18 +30,27 @@ class _UsersPageState extends State<UsersPage> {
           context.read<UsersCubit>().searchUsers(text);
         }
       });
+      _scrollController.addListener(() {
+        ScrollPosition scrollPosition = _scrollController.position;
+        if (scrollPosition.pixels > scrollPosition.maxScrollExtent - 1000 &&
+            !state.isScrollToLoading) {
+          context.read<UsersCubit>().loadMoreUsers();
+        }
+      });
       listenerAdded = true;
     }
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _textEditingController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
+    _scrollController = ScrollController();
     _textEditingController = TextEditingController();
     super.initState();
   }
@@ -61,9 +71,13 @@ class _UsersPageState extends State<UsersPage> {
                 children: <Widget>[
                   const SizedBox(height: 10),
                   ListView.builder(
+                      controller: _scrollController,
                       padding: const EdgeInsets.only(top: 90),
                       itemCount: state.users.length,
                       itemBuilder: (BuildContext context, int index) {
+                        if (index == state.users.length) {
+                          context.read<UsersCubit>().scrollToLoadCompleted();
+                        }
                         return GestureDetector(
                           child: Row(
                             children: <Widget>[
