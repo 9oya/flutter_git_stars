@@ -4,6 +4,7 @@ import 'package:flutter_git_stars/bloc/users/users_state.dart';
 import 'package:flutter_git_stars/domain/usecase/users_usecase.dart';
 import 'package:flutter_git_stars/presentation/utils/di/di.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../bloc/users/users_cubit.dart';
 
@@ -63,19 +64,28 @@ class _UsersPageState extends State<UsersPage> {
                       padding: const EdgeInsets.only(top: 90),
                       itemCount: state.users.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          children: <Widget>[
-                            CachedNetworkImage(
-                              height: 90,
-                              width: 90,
-                              imageUrl: state.users[index].avatarUrl,
-                            ),
-                            Text(state.users[index].login),
-                          ],
+                        return GestureDetector(
+                          child: Row(
+                            children: <Widget>[
+                              CachedNetworkImage(
+                                height: 90,
+                                width: 90,
+                                imageUrl: state.users[index].avatarUrl,
+                              ),
+                              Text(state.users[index].login),
+                            ],
+                          ),
+                          onTap: () {
+                            context.go('/users/detail', extra: {
+                              'login': state.users[index].login,
+                              'avatarUrl': state.users[index].avatarUrl
+                            });
+                          },
                         );
                       }),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                    padding:
+                        const EdgeInsets.only(left: 10, top: 10, right: 10),
                     child: SearchBar(
                       controller: _textEditingController,
                       hintText: 'Search users',

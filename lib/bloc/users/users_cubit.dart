@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_git_stars/bloc/users/users_state.dart';
 import 'package:flutter_git_stars/data/remote/users_remote_data_source.dart';
-import 'package:flutter_git_stars/domain/entity/user_item_model.dart';
 import 'package:flutter_git_stars/domain/usecase/users_usecase.dart';
 
-import '../../domain/entity/search_response.dart';
+import '../../domain/entity/entity.dart';
 
 class UsersCubit extends Cubit<UsersState> {
   UsersCubit(this._usersUseCase) : super(UsersState.fromDefault());
