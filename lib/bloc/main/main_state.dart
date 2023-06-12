@@ -8,15 +8,15 @@ class MainState extends Equatable {
     required this.currentIndex,
   });
 
-  final List<Routes> tabs;
+  final List<RouteInfo> tabs;
   final int currentIndex;
 
   factory MainState.fromDefault() {
-    return const MainState(tabs: [Routes.users, Routes.stars], currentIndex: 0);
+    return const MainState(tabs: [RouteInfo.users, RouteInfo.stars], currentIndex: 0);
   }
 
   MainState copyWith({
-    List<Routes>? tabs,
+    List<RouteInfo>? tabs,
     int? currentIndex,
   }) {
     return MainState(

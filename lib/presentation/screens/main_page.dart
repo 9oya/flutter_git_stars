@@ -32,19 +32,7 @@ class _MainPageState extends State<MainPage> {
                   widget.navigationShell.goBranch(index,
                       initialLocation: index ==
                           widget.navigationShell.currentIndex);
-
-                  // switch (index) {
-                  //   case 0:
-                  //     context.go(Routes.users.path,
-                  //         extra: {'title': Routes.users.title});
-                  //     break;
-                  //   case 1:
-                  //     context.go(Routes.stars.path,
-                  //         extra: {'title': Routes.stars.title});
-                  //     break;
-                  // }
-
-                  context.read<MainCubit>().changeTab(index);
+                  context.read<MainCubit>().onTabChanged(index);
                 },
                 items: buildBottomNavigationBarItems(state.tabs),
               ),
@@ -54,13 +42,13 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<BottomNavigationBarItem> buildBottomNavigationBarItems(
-      List<Routes> tabs) {
+      List<RouteInfo> tabs) {
     List<BottomNavigationBarItem> items = [];
-    for (Routes routes in tabs) {
+    for (RouteInfo routeInfo in tabs) {
       items.add(
         BottomNavigationBarItem(
-          icon: Icon(routes.iconData),
-          label: routes.title,
+          icon: Icon(routeInfo.iconData),
+          label: routeInfo.title,
         ),
       );
     }

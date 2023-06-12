@@ -9,7 +9,7 @@ class MainCubit extends Cubit<MainState> {
     emit(MainState.fromDefault());
   }
 
-  void changeTab(int index) {
+  void onTabChanged(int index) {
     emit(state.copyWith(currentIndex: index));
   }
 }

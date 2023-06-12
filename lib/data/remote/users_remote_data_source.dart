@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/entity/entity.dart';
@@ -35,37 +34,38 @@ abstract class UsersRemoteDataSource {
 
 @Injectable(as: UsersRemoteDataSource)
 class UsersRemoteDataSourceImpl implements UsersRemoteDataSource {
+  UsersRemoteDataSourceImpl(this._client, this._decoder);
+
+  final http.Client _client;
+  final Converter _decoder;
+
   @override
   Future<UserInfoModel> fetchUserInfo(String login) {
-    final http.Client client = http.Client();
-    return client
+    return _client
         .get(Uri.https('api.github.com', '/users/$login'))
-        .then((Response response) {
-      var decodedResponse =
-          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+        .then((http.Response response) {
+      var decodedResponse = _decoder.convert(utf8.decode(response.bodyBytes))
+          as Map<String, dynamic>;
       return UserInfoModel.fromJson(decodedResponse);
-    }).whenComplete(() => client.close());
+    }).whenComplete(() {});
   }
 
   @override
   Future<SearchResponse> searchUsers(String query, UserSortType sort,
       OrderType order, int page, int perPage) async {
-    final http.Client client = http.Client();
     try {
-      Response response =
-          await client.get(Uri.https('api.github.com', '/search/users', {
+      http.Response response =
+          await _client.get(Uri.https('api.github.com', '/search/users', {
         'q': query,
         'sort': sort.value,
         'order': order.value,
         'page': page.toString(),
         'per_page': perPage.toString(),
       }));
-      var decodedResponse =
-          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      var decodedResponse = _decoder.convert(utf8.decode(response.bodyBytes))
+          as Map<String, dynamic>;
       SearchResponse searchResponse = SearchResponse.fromJson(decodedResponse);
       return searchResponse;
-    } finally {
-      client.close();
-    }
+    } finally {}
   }
 }
